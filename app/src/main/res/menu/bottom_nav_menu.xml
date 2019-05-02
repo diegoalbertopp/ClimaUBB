@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_temperatura"
+        android:icon="@drawable/ic_temperatura"
+        android:title="@string/title_temperatura" />
+
+    <item
+        android:id="@+id/navigation_radiacion"
+        android:icon="@drawable/ic_radiacion"
+        android:title="Radiación UV" />
+
+    <item
+        android:id="@+id/navigation_humedad"
+        android:icon="@drawable/ic_humedad"
+        android:title="Humedad" />
+
+</menu>
