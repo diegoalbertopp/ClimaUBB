@@ -31,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
     private RequestQueue queue;
     private TextView text;
     private TextView text2;
+    private TextView ciudad;
     private Gauge gauge;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -72,6 +73,11 @@ public class MainActivity extends AppCompatActivity {
         text = findViewById(R.id.texto);
         queue = Volley.newRequestQueue(this);
         text2 = findViewById(R.id.texto2);
+        ciudad = findViewById(R.id.ciudad);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+        Date date = new Date();
+        String fecha = dateFormat.format(date);
+        ciudad.setText("Chillán | "+fecha);
         BottomNavigationView navView = findViewById(R.id.nav_view);
         gauge = (Gauge) findViewById(R.id.gauge);
         navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
