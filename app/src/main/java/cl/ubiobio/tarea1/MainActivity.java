@@ -31,6 +31,8 @@ public class MainActivity extends AppCompatActivity {
     private RequestQueue queue;
     private TextView text;
     private TextView text2;
+    private TextView text3;
+    private TextView text4;
     private TextView ciudad;
     private Gauge gauge;
 
@@ -45,10 +47,14 @@ public class MainActivity extends AppCompatActivity {
                     gauge.setMaxValue(60);
                     gauge.setTotalNicks(60);
                     gauge.setValuePerNick(1);
+                    text3.setText("°C");
+                    text4.setText("°C");
                     obtener("E1yGxKAcrg");
                     return true;
                 case R.id.navigation_radiacion:
                     mTextMessage.setText(R.string.title_radiacion);
+                    text3.setText("nm");
+                    text4.setText("nm");
                     gauge.setMaxValue(1600);
                     gauge.setTotalNicks(100);
                     gauge.setValuePerNick(16);
@@ -56,6 +62,8 @@ public class MainActivity extends AppCompatActivity {
                     return true;
                 case R.id.navigation_humedad:
                     mTextMessage.setText(R.string.title_humedad);
+                    text3.setText("%RH");
+                    text4.setText("%RH");
                     gauge.setMaxValue(100);
                     gauge.setTotalNicks(100);
                     gauge.setValuePerNick(1);
@@ -70,9 +78,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        getSupportActionBar().hide();
         text = findViewById(R.id.texto);
         queue = Volley.newRequestQueue(this);
         text2 = findViewById(R.id.texto2);
+        text3 = findViewById(R.id.texto3);
+        text4 = findViewById(R.id.texto4);
         ciudad = findViewById(R.id.ciudad);
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
         Date date = new Date();
@@ -81,38 +92,32 @@ public class MainActivity extends AppCompatActivity {
         BottomNavigationView navView = findViewById(R.id.nav_view);
         gauge = (Gauge) findViewById(R.id.gauge);
         navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-
-        //Iniciamos de esta manera
         mTextMessage = findViewById(R.id.message);
+
+        //Iniciamos mostrando la temperatura
         mTextMessage.setText("Temperatura");
+        text3.setText("°C");
+        text4.setText("°C");
         obtener("E1yGxKAcrg");
         gauge.setMaxValue(60);
         gauge.setTotalNicks(60);
         gauge.setValuePerNick(1);
     }
 
-    private void obtener(final String sensor){
+    private void obtener(String sensor){
         SimpleDateFormat dateFormat = new SimpleDateFormat("ddMMyyyy", Locale.getDefault());
         Date date = new Date();
         String fecha = dateFormat.format(date);
-        String url="http://arrau.chillan.ubiobio.cl:8075/ubbiot/web/mediciones/medicionespordia/DY6A0fMetu/"+sensor+"/"+fecha;
+        final String url="http://arrau.chillan.ubiobio.cl:8075/ubbiot/web/mediciones/medicionespordia/DY6A0fMetu/"+sensor+"/"+fecha;
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 try{
+
                     JSONArray mJsonArray = response.getJSONArray("data");
                     JSONObject mJsonobject = mJsonArray.getJSONObject(mJsonArray.length()-1);
                     String dato = mJsonobject.getString("valor");
-                    if(sensor == "E1yGxKAcrg"){
-                        text.setText(dato+"°C");
-                    }else{
-                        if(sensor == "8IvrZCP3qa"){
-                            text.setText(dato+"nm");
-                        }else{
-                            text.setText(dato+"%RH");
-                        }
-                    }
-
+                    text.setText(dato);
                     int suma = 0;
 
                     for(int i=0; i<mJsonArray.length();i++) {
@@ -124,16 +129,8 @@ public class MainActivity extends AppCompatActivity {
 
                     int promedio = suma / mJsonArray.length();
                     String total = Integer.toString(promedio);
+                    text2.setText(total);
 
-                    if(sensor == "E1yGxKAcrg"){
-                        text2.setText(total+"°C");
-                    }else{
-                        if(sensor == "8IvrZCP3qa"){
-                            text2.setText(total+"nm");
-                        }else{
-                            text2.setText(total+"%RH");
-                        }
-                    }
 
                     Float resultado = Float.parseFloat(dato);
                     gauge.moveToValue(resultado);
