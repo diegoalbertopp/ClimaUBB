@@ -33,6 +33,10 @@ public class MainActivity extends AppCompatActivity {
     private Float actualR;
     private Float actualH;
 
+    private int promedioT;
+    private int promedioR;
+    private int promedioH;
+
     private RequestQueue queue;
 
     private TextView text;
@@ -77,9 +81,12 @@ public class MainActivity extends AppCompatActivity {
         text3 = findViewById(R.id.texto3);
         text4 = findViewById(R.id.texto4);
         ciudad = findViewById(R.id.ciudad);
-        actualT = 0f;
-        actualR = 0f;
-        actualH = 0f;
+        actualT = -100f;
+        actualR = -1f;
+        actualH = -1f;
+        promedioT = -1;
+        promedioR = -1;
+        promedioH = -1;
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
         Date date = new Date();
         String fecha = dateFormat.format(date);
@@ -124,6 +131,7 @@ public class MainActivity extends AppCompatActivity {
 
                     int promedio = suma / mJsonArray.length();
                     String total = Integer.toString(promedio);
+                    promedioT = promedio;
                     text2.setText(total);
 
 
@@ -139,14 +147,15 @@ public class MainActivity extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                if(actualT>0){
+                if(actualT>-100){
                     text.setText(Math.round(actualT)+"");
-                    text2.setText(Math.round(actualT)+"");
+                    text2.setText(promedioT+"");
+                    gauge.moveToValue(actualT);
                 }else{
                     text.setText("-");
                     text2.setText("-");
+                    gauge.moveToValue(0);
                 }
-                gauge.moveToValue(actualT);
             }
         });
         queue.add(request);
@@ -180,6 +189,7 @@ public class MainActivity extends AppCompatActivity {
 
                     int promedio = suma / mJsonArray.length();
                     String total = Integer.toString(promedio);
+                    promedioR = promedio;
                     text2.setText(total);
 
 
@@ -195,14 +205,15 @@ public class MainActivity extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                if(actualR>0){
+                if(actualR>=0){
                     text.setText(Math.round(actualR)+"");
-                    text2.setText(Math.round(actualR)+"");
+                    text2.setText(promedioR+"");
+                    gauge.moveToValue(actualR);
                 }else{
                     text.setText("-");
                     text2.setText("-");
+                    gauge.moveToValue(0);
                 }
-                gauge.moveToValue(actualR);
             }
         });
         queue.add(request);
@@ -236,6 +247,7 @@ public class MainActivity extends AppCompatActivity {
 
                     int promedio = suma / mJsonArray.length();
                     String total = Integer.toString(promedio);
+                    promedioH = promedio;
                     text2.setText(total);
 
 
@@ -251,14 +263,15 @@ public class MainActivity extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                if(actualH>0){
+                if(actualH>=0){
                     text.setText(Math.round(actualH)+"");
-                    text2.setText(Math.round(actualH)+"");
+                    text2.setText(promedioH+"");
+                    gauge.moveToValue(actualH);
                 }else{
                     text.setText("-");
                     text2.setText("-");
+                    gauge.moveToValue(0);
                 }
-                gauge.moveToValue(actualH);
             }
         });
         queue.add(request);
