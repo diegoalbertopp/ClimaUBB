@@ -71,7 +71,7 @@
                 android:layout_height="300dp"
                 android:layout_centerInParent="true"
                 android:layout_gravity="center"
-                gauge:faceColor="@color/MidnightBlue"
+                gauge:faceColor="@color/Black"
                 gauge:initialValue="0"
                 gauge:minValue="0"
                 gauge:needleColor="@color/Yellow"
